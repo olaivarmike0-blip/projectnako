@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 26th Birthday, Mary Eloise!</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Warm, elegant yellow gradient background */
+            background: linear-gradient(135deg, #FFF176 0%, #FFD54F 50%, #FFCA28 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas for confetti layer */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Card Container */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 500px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 15px 35px rgba(212, 160, 23, 0.3), 0 5px 15px rgba(0,0,0,0.07);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid #FFF59D;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .badge {
+            background: #FFB300;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #D84315;
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .age-text {
+            font-size: 1.1rem;
+            color: #F57F17;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .photo-frame {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            border: 4px solid #FFC107;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            background-color: #FFF9C4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .message {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #424242;
+            margin-bottom: 25px;
+            background: #FFFDE7;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #FBC02D;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 143, 0, 0.4);
+            background: linear-gradient(135deg, #FFA000 0%, #FF6F00 100%);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Music Floating Toggle */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            color: #F57F17;
+            border: 2px solid #FFCA28;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+        }
+
+        /* Floating background shapes */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 6s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .bg-1 { width: 80px; height: 80px; top: 10%; left: 5%; animation-delay: 0s; }
+        .bg-2 { width: 120px; height: 120px; bottom: 10%; right: 5%; animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.3rem; }
+            .card { padding: 25px 18px; }
+            .photo-frame { width: 120px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Floating Background Circles -->
+    <div class="bg-element bg-1"></div>
+    <div class="bg-element bg-2"></div>
+
+    <!-- Main Card -->
+    <div class="card">
+        <span class="badge">Happy Birthday!</span>
+        <h1>Mary Eloise</h1>
+        <div class="age-text">✨ Celebrating 26 Wonderful Years ✨</div>
+
+        <!-- Optional: Replace the emoji with an <img> tag if you have a photo link -->
+        <!-- <div class="photo-frame"><img src="your-photo-url.jpg" alt="Mary Eloise"></div> -->
+        <div class="photo-frame">👑</div>
+
+        <div class="message">
+            To my superrrridol, Mary Eloise!<br>
+            May your 26th year be as bright, warm, and beautiful as your favorite color, yellow! Keep shining and inspiring everyone around you. Have an amazing day filled with joy and love! Congrats Brobro, Level 26 unlocked! Wahahahahahahaha💛✨
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn" onclick="triggerConfetti()">🎉 Celebrate with Confetti!</button>
+        </div>
+    </div>
+
+    <!-- Background Music Audio Tag -->
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73213.mp3?filename=happy-birthday-155461.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="music-btn" id="music-toggle" onclick="toggleMusic()" title="Play/Pause Music">🎵</button>
+
+    <script>
+        // Automatic Confetti burst when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            shootConfetti()
+            // Fire again after a short delay for extra effect
+            setTimeout(shootConfetti, 1000)
+        })
+
+        // Function to launch confetti
+        function shootConfetti() {
+            var count = 200
+            var defaults = {
+                origin: { y: 0.7 }
+            }
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }))
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+                colors: ['#FFD54F', '#FFF176', '#FFB300']
+            })
+            fire(0.2, {
+                spread: 60,
+                colors: ['#FFFFFF', '#FF8F00', '#FFCA28']
+            })
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            })
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                colors: ['#FFE082', '#FFF59D', '#FF6F00']
+            })
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            })
+        }
+
+        function triggerConfetti() {
+            shootConfetti()
+        }
+
+        // Music toggle functionality
+        const audio = document.getElementById('bg-music')
+        const musicBtn = document.getElementById('music-toggle')
+        let isPlaying = false
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause()
+                musicBtn.textContent = '🎵'
+            } else {
+                audio.play().then(() => {
+                    musicBtn.textContent = '⏸️'
+                }).catch(err => {
+                    console.log("Audio play blocked by browser policy.", err)
+                })
+            }
+            isPlaying = !isPlaying
+        }
+    </script>
+</body>
+</html>
